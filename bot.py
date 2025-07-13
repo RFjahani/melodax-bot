@@ -9,11 +9,9 @@ from telegram.ext import (
     ContextTypes,
     filters,
 )
-from dotenv import load_dotenv
 
-# بارگذاری توکن
-load_dotenv("token.env")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+# بارگذاری توکن از متغیر محیطی (برای Railway)
+BOT_TOKEN = os.environ["BOT_TOKEN"]
 
 # فقط ادمین می‌تونه سفارش اضافه کنه
 ADMIN_USER_ID = 62435607
@@ -107,7 +105,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         tracking = get_tracking_code(text)
         await update.message.reply_text(tracking, parse_mode="Markdown")
 
-        # اگر ادمین بود → اطلاع بده
+        # اگر ادمین نبود → اطلاع بده
         if user_id != ADMIN_USER_ID and tracking.startswith("📦"):
             await context.bot.send_message(
                 chat_id=ADMIN_USER_ID,
